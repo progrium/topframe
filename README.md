@@ -21,7 +21,21 @@ User programmable screen overlay using web technologies
 
  * download or run shell command
  * run with edit flag `topframe --edit`
- * install with launchctl `topframe --plist`
+
+### Launching on Startup
+
+Topframe works with `launchd` to run as an agent on startup. You can generate
+a plist file with `topframe -agent`, which you can write to a file and move
+into `/Library/LaunchAgents`:
+
+```
+$ topframe -agent > com.progrium.Topframe.plist
+$ sudo mv com.progrium.Topframe.plist /Library/LaunchAgents
+```
+
+The generated plist will use the current binary location, so make sure it's
+in the right place before generating, or modify the plist file.
+
 
 ## Documentation
 
