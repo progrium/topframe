@@ -9,7 +9,7 @@ User programmable screen overlay using web technologies
 <a href="https://github.com/sponsors/progrium" title="Sponsor Project"><img src="https://img.shields.io/static/v1?label=sponsor&message=%E2%9D%A4&logo=GitHub" alt="Sponsor Project" /></a>
 
 ---
-* Display information or always-on-top widgets
+* Display information and always-on-top widgets
 * Use HTML/JS/CSS to draw on your screen
 * Great for screencasting or streaming overlays
 * Edit source, hit save, screen will update
@@ -61,17 +61,19 @@ in the right place before generating, or modify the plist file.
 
 ## Documentation
 
- * wiki
+There is not a whole lot to topframe! I recommend [reading the source](https://github.com/progrium/topframe/blob/main/topframe.go) as its only a few hundred lines,
+but otherwise there is a [wiki](https://github.com/progrium/topframe/wiki) ready to document anything else.
 
 ## Getting Help
 
- * forum
+If you're having trouble, be sure to check [issues](https://github.com/progrium/topframe/issues) to see if its a known issue. Otherwise, feel free to drop
+a question into the [discussion forum](https://github.com/progrium/topframe/discussions).
 
 ## Contributing
 
- * maintainers wanted
- * small PRs welcome
- * big PRs discuss first
+Ideally, topframe will be kept small. Bug fixes and other small PRs are welcome and should be merged quickly.
+If you happen to have a large PR that we haven't discussed, you should talk about it in the forum first. In order
+to keep the project small, some features suggestions may be held back in favor of determining a good extension point to expose instead.
 
 ## About
 
