@@ -9,7 +9,7 @@ User programmable screen overlay using web technologies
 <a href="https://github.com/sponsors/progrium" title="Sponsor Project"><img src="https://img.shields.io/static/v1?label=sponsor&message=%E2%9D%A4&logo=GitHub" alt="Sponsor Project" /></a>
 
 ---
-* Display information or place always-on-top widgets
+* Display information or always-on-top widgets
 * Use HTML/JS/CSS to draw on your screen
 * Great for screencasting or streaming overlays
 * Edit source, hit save, screen will update
@@ -18,8 +18,31 @@ User programmable screen overlay using web technologies
 
 ## Getting Started
 
- * download or run shell command
- * run with edit flag `topframe --edit`
+First, [download Go](https://golang.org/dl/) or `brew install go`. If you have Go installed, make sure it is 
+version 1.16 or greater:
+
+```
+$ go version
+go version go1.16.2 darwin/amd64
+```
+
+Then use `go get` to download, build, and install the topframe binary into a `PATH` directory:
+
+```
+$ GOBIN=/usr/local/bin go get github.com/progrium/topframe
+```
+
+Currently, this is the preferred way to install as anything else requires a much more elaborate
+release process with Apple code signing, etc. Specifying `GOBIN` is optional, but lets you specify
+where to install the binary, ensuring it is put in a directory in your `PATH`. 
+
+Running `topframe` will create a `~/.topframe` directory with a default `index.html` used for the
+overlay. If you have an `EDITOR` specified, you can run with `-edit` to open this in your preferred editor
+so you can start making changes to your topframe overlay immediately:
+
+```
+$ topframe -edit
+```
 
 ### Launching on Startup
 
@@ -51,5 +74,7 @@ in the right place before generating, or modify the plist file.
  * big PRs discuss first
 
 ## About
+
+Topframe started as a 130 line example for [progrium/macdriver](https://github.com/progrium/macdriver).
 
 MIT Licensed
