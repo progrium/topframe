@@ -3,7 +3,6 @@
 # topframe
 User programmable screen overlay using web technologies
 
-<a href="https://github.com/progrium/topframe/actions?workflow=test"><img alt="Test workflow" src="https://img.shields.io/github/workflow/status/progrium/topframe/Test?label=test&logo=github&style=flat-square"></a>
 [![Go Report Card](https://goreportcard.com/badge/github.com/progrium/topframe)](https://goreportcard.com/report/github.com/progrium/topframe)
 <a href="https://twitter.com/progriumHQ" title="@progriumHQ on Twitter"><img src="https://img.shields.io/badge/twitter-@progriumHQ-55acee.svg" alt="@progriumHQ on Twitter"></a>
 <a href="https://github.com/progrium/topframe/discussions" title="Project Forum"><img src="https://img.shields.io/badge/community-forum-ff69b4.svg" alt="Project Forum"></a>

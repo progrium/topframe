@@ -29,6 +29,12 @@ var (
 	flagAgent bool
 
 	dir string
+
+	//go:embed index.html
+	defaultIndex []byte
+
+	//go:embed agent.plist
+	plist string
 )
 
 func init() {
@@ -60,16 +66,11 @@ func main() {
 	dir = filepath.Join(usr.HomeDir, ".topframe")
 	os.MkdirAll(dir, 0755)
 
-	//go:embed index.html
-	var defaultIndex []byte
 	if _, err := os.Stat(filepath.Join(dir, "index.html")); os.IsNotExist(err) {
 		ioutil.WriteFile(filepath.Join(dir, "index.html"), defaultIndex, 0644)
 	}
 
 	if flagAgent {
-		//go:embed agent.plist
-		var plist string
-
 		tmpl, err := template.New("plist").Parse(plist)
 		if err != nil {
 			log.Fatal(err)
