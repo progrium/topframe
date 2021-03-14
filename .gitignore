@@ -16,4 +16,4 @@
 
 **/.DS_Store
 /local
-/dist
+dist/
