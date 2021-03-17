@@ -1,9 +1,9 @@
-<img align="left" src="./topframe.png" />
+<img align="left" alt="Topframe" src="./topframe.png" />
 
-# topframe
+# Topframe
 User programmable screen overlay using web technologies
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/progrium/topframe)](https://goreportcard.com/report/github.com/progrium/topframe)
+<a href="https://goreportcard.com/report/github.com/progrium/topframe" title="Go Report Card"><img src="https://goreportcard.com/badge/github.com/progrium/topframe" alt="Go Report Card"></a>
 <a href="https://twitter.com/progriumHQ" title="@progriumHQ on Twitter"><img src="https://img.shields.io/badge/twitter-@progriumHQ-55acee.svg" alt="@progriumHQ on Twitter"></a>
 <a href="https://github.com/progrium/topframe/discussions" title="Project Forum"><img src="https://img.shields.io/badge/community-forum-ff69b4.svg" alt="Project Forum"></a>
 <a href="https://github.com/sponsors/progrium" title="Sponsor Project"><img src="https://img.shields.io/static/v1?label=sponsor&message=%E2%9D%A4&logo=GitHub" alt="Sponsor Project" /></a>
@@ -11,14 +11,14 @@ User programmable screen overlay using web technologies
 ---
 * Display information and always-on-top widgets
 * Use HTML/JS/CSS to draw on your screen
-* Great for screencasting or streaming overlays
 * Edit source, hit save, screen will update
-* Less than 300 lines of Go code
+* Extensible with shell scripts in any language
+* Less than 400 lines of Go code, minimal deps
 * Currently alpha, macOS only ...
 
 ## Getting Started
 
-First, [download Go](https://golang.org/dl/) or `brew install go`. If you have Go installed, make sure it is 
+First, [download Go 1.16+](https://golang.org/dl/) or `brew install go`. If already installed, make sure it is 
 version 1.16 or greater:
 
 ```
@@ -26,7 +26,8 @@ $ go version
 go version go1.16.2 darwin/amd64
 ```
 
-Then use `go get` to download, build, and install the topframe binary into a `PATH` directory:
+Then use `go get` to download, build, and install the topframe binary into a directory in your `PATH` 
+by setting `GOBIN`:
 
 ```
 $ GOBIN=/usr/local/bin go get github.com/progrium/topframe
@@ -34,34 +35,41 @@ $ GOBIN=/usr/local/bin go get github.com/progrium/topframe
 
 Currently, this is the preferred way to install as anything else requires a much more elaborate
 release process with Apple code signing, etc. Specifying `GOBIN` is optional, but lets you specify
-where to install the binary, ensuring it is put in a directory in your `PATH`. 
-
-Running `topframe` will create a `~/.topframe` directory with a default `index.html` used for the
-overlay. If you have an `EDITOR` specified, you can run with `-edit` to open this in your preferred editor
-so you can start making changes to your topframe overlay immediately:
+where to install the binary, ensuring it is put in your `PATH`. 
 
 ```
-$ topframe -edit
+$ topframe
+Usage: topframe <flags> <subcommand> <subcommand args>
+
+Subcommands:
+        agent            fullscreen webview overlay agent
+        docs             open documentation in browser
+        help             describe subcommands and their syntax
+        version          show version
 ```
+
+Running `topframe agent` will create a `~/.topframe` directory with a default `index.html` used for the
+overlay. A new menu bar extra will let you enable or disable the overlay, make it interactive for
+debugging and bringing up devtools, and quickly open the `~/.topframe` directory to edit source.
+Files changed in the directory will trigger a reload, so if you edit `index.html` and hit save, changes
+will reflect immediately.
 
 ### Launching on Startup
 
 Topframe works with `launchd` to run as an agent on startup. You can generate
-a plist file with `topframe -agent`, which you can write to a file and move
-into `/Library/LaunchAgents`:
+an agent plist file with `topframe agent -plist`, which you can write to a file in `~/Library/LaunchAgents`:
 
 ```
-$ topframe -agent > com.progrium.Topframe.plist
-$ sudo mv com.progrium.Topframe.plist /Library/LaunchAgents
+$ topframe agent -plist > ~/Library/LaunchAgents/com.progrium.Topframe.plist
 ```
 
-The generated plist will use the current binary location, so make sure it's
-in the right place before generating, or modify the plist file.
+It's a good idea to view the output before writing to the file, just to make sure
+paths are correct. If you don't know what is correct, it's probably fine!
 
 
 ## Documentation
 
-There is not a whole lot to topframe! I recommend [reading the source](https://github.com/progrium/topframe/blob/main/topframe.go) as its only a few hundred lines,
+There is not a whole lot to Topframe! I recommend [reading the source](https://github.com/progrium/topframe/blob/main/topframe.go) as its only a few hundred lines,
 but otherwise there is a [wiki](https://github.com/progrium/topframe/wiki) ready to document anything else.
 
 ## Getting Help
@@ -71,7 +79,7 @@ a question into the [discussion forum](https://github.com/progrium/topframe/disc
 
 ## Contributing
 
-Ideally, topframe will be kept small. Bug fixes and other small PRs are welcome and should be merged quickly.
+Ideally, Topframe is kept small. Bug fixes and other small PRs are welcome and should be merged quickly.
 If you happen to have a large PR that we haven't discussed, you should talk about it in the forum first. In order
 to keep the project small, some features suggestions may be held back in favor of determining a good extension point to expose instead.
 

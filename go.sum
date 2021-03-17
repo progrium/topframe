@@ -1,8 +1,10 @@
+github.com/google/subcommands v1.2.0 h1:vWQspBTo2nEqTUFita5/KeEWlUL8kQObDFbub/EN9oE=
+github.com/google/subcommands v1.2.0/go.mod h1:ZjhPrFU+Olkh9WazFPsl27BQ4UPiG37m3yTrtFlrHVk=
 github.com/gorilla/websocket v1.4.2/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
 github.com/manifold/qtalk v0.0.0-20201222233608-81c04ab41f37/go.mod h1:UX1KjRclAJyV+ydrpEO1CnF8x95Le/Adx8BMGPJaYqg=
 github.com/mitchellh/mapstructure v1.4.0/go.mod h1:bFUtVrKA4DC2yAKiSyO/QUcy7e+RRV2QTWOzhPopBRo=
-github.com/progrium/macdriver v0.0.1 h1:IB6OIz+OotdKiCYRo9OLcrPSu1kP29RHmhEaol//sQk=
-github.com/progrium/macdriver v0.0.1/go.mod h1:9sPyjQ2zVExbC7I5tL3GPzyaet/cS3o4g8Ht2JcYuRk=
+github.com/progrium/macdriver v0.0.2 h1:+xHcfZ4Ggpc68InlZ9BnDJdbxxE5essolTxp+aonnlw=
+github.com/progrium/macdriver v0.0.2/go.mod h1:9sPyjQ2zVExbC7I5tL3GPzyaet/cS3o4g8Ht2JcYuRk=
 github.com/progrium/watcher v1.0.7 h1:A+ciAtU09mHrTW0tdODa6SwWEuKMKF+n/vBJYNU/FqE=
 github.com/progrium/watcher v1.0.7/go.mod h1:JQYLbWpkvkx6EDYKgqn4Tv5zwhRXe9a+MQw1wnmcyvI=
 github.com/rs/xid v1.2.1/go.mod h1:+uKXf+4Djp6Md1KODXJxgGQPKngRmWyn10oCKFzNHOQ=
