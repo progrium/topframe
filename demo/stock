@@ -1,0 +1,2 @@
+#!/bin/sh
+curl -s "https://query1.finance.yahoo.com/v7/finance/quote?symbols=$1"

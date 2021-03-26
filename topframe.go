@@ -15,6 +15,7 @@ import (
 	"os/user"
 	"path/filepath"
 	"runtime"
+	"strings"
 	"text/template"
 	"time"
 
@@ -28,7 +29,10 @@ import (
 	"github.com/progrium/watcher"
 )
 
-const version = "0.2.0"
+const (
+	version = "0.2.0"
+	docsURL = "http://github.com/progrium/topframe"
+)
 
 var (
 	//go:embed index.html
@@ -120,7 +124,7 @@ func startServer(dir string) *net.TCPAddr {
 		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			dirpath := filepath.Join(dir, r.URL.Path)
 			if isExecScript(dirpath) && r.Header.Get("Accept") == "text/event-stream" {
-				streamExecScript(w, dirpath)
+				streamExecScript(w, dirpath, strings.Split(r.URL.RawQuery, "+"))
 				return
 			}
 			http.FileServer(http.Dir(dir)).ServeHTTP(w, r)
@@ -165,7 +169,8 @@ func runApp(dir string, addr *net.TCPAddr, fw *watcher.Watcher) {
 		wv.SetValueForKey(core.False, core.String("drawsBackground"))
 		wv.LoadRequest(req)
 
-		win := cocoa.NSWindow_Init(cocoa.NSScreen_Main().Frame(), cocoa.NSClosableWindowMask,
+		win := cocoa.NSWindow_Init(cocoa.NSScreen_Main().Frame(),
+			cocoa.NSClosableWindowMask|cocoa.NSBorderlessWindowMask,
 			cocoa.NSBackingStoreBuffered, false)
 		win.SetContentView(wv)
 		win.SetBackgroundColor(cocoa.NSColor_Clear())
@@ -176,6 +181,7 @@ func runApp(dir string, addr *net.TCPAddr, fw *watcher.Watcher) {
 		win.SetLevel(cocoa.NSMainMenuWindowLevel + 2)
 		win.MakeKeyAndOrderFront(win)
 		win.SetCollectionBehavior(cocoa.NSWindowCollectionBehaviorCanJoinAllSpaces)
+		win.Send("setHasShadow:", false)
 
 		statusBar := cocoa.NSStatusBar_System().StatusItemWithLength(cocoa.NSVariableStatusItemLength)
 		statusBar.Retain()
@@ -253,7 +259,7 @@ func runApp(dir string, addr *net.TCPAddr, fw *watcher.Watcher) {
 		}()
 	})
 
-	log.Printf("topframe %s by progrium\n", version)
+	log.Printf("topframe %s from progrium.com\n", version)
 	app.ActivateIgnoringOtherApps(true)
 	app.Run()
 }
@@ -265,7 +271,7 @@ func (*docsCmd) Synopsis() string         { return "open documentation in browse
 func (*docsCmd) Usage() string            { return "Usage: topframe docs\n" }
 func (*docsCmd) SetFlags(f *flag.FlagSet) {}
 func (p *docsCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
-	fatal(exec.Command("open", "http://github.com/progrium/topframe").Run())
+	fatal(exec.Command("open", docsURL).Run())
 	return subcommands.ExitSuccess
 }
 
@@ -276,14 +282,14 @@ func (*versionCmd) Synopsis() string         { return "show version" }
 func (*versionCmd) Usage() string            { return "Usage: topframe version\n" }
 func (*versionCmd) SetFlags(f *flag.FlagSet) {}
 func (p *versionCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
-	fmt.Println("0.2.0")
+	fmt.Println(version)
 	return subcommands.ExitSuccess
 }
 
-func streamExecScript(w http.ResponseWriter, dirpath string) {
+func streamExecScript(w http.ResponseWriter, dirpath string, args []string) {
 	flusher, ok := w.(http.Flusher)
 	if !ok || !isExecScript(dirpath) {
-		http.Error(w, "unsupported", http.StatusInternalServerError)
+		http.Error(w, "script unsupported", http.StatusInternalServerError)
 		return
 	}
 
@@ -292,28 +298,31 @@ func streamExecScript(w http.ResponseWriter, dirpath string) {
 	w.Header().Set("Connection", "keep-alive")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
-	cmd := exec.Command(dirpath)
+	cmd := exec.Command(dirpath, args...)
 	cmd.Stderr = os.Stderr
 	r, _ := cmd.StdoutPipe()
 	scanner := bufio.NewScanner(r)
 
+	finished := make(chan bool)
 	go func() {
 		for scanner.Scan() {
 			_, err := io.WriteString(w, fmt.Sprintf("data: %s\n\n", scanner.Text()))
 			if err != nil {
-				log.Println(err)
+				log.Println("script:", err)
 				return
 			}
 			flusher.Flush()
 		}
 		if err := scanner.Err(); err != nil {
-			log.Println(err)
+			log.Println("script:", err)
 		}
+		finished <- true
 	}()
 
 	if err := cmd.Run(); err != nil {
 		log.Println(err)
 	}
+	<-finished
 }
 
 func isExecScript(dirpath string) bool {
