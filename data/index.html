@@ -1,0 +1,83 @@
+<html>
+<head>
+  <script src="/-/data/jquery-1.12.4.min.js"></script>
+  <link href="/-/data/tailwind-2.0.4.min.css" rel="stylesheet" />
+  <style>
+    body {
+      border: 5px solid;
+      border-image-slice: 1; 
+      border-image-source: linear-gradient(to left, #743ad5, #d53a9d);
+    }
+  </style>
+</head>
+<body class="text-white">
+  <div id="leftskull" class="absolute left-2 top-8 draggable"><img src="/-/data/smoking-skull.gif" /></div>
+  <div id="rightskull" class="absolute right-2 top-8 draggable"><img src="/-/data/smoking-skull.gif" /></div>
+
+  <audio id="music" autoplay src="/-/data/LostBookOfTruth.mp3" type="audio/mpeg"></audio>
+  <script>
+    // music by @disasterpeace
+    var audio = document.getElementById("music");
+    audio.volume = 0.15;
+  </script>
+  
+
+  <canvas id="demo" class="m-auto"></canvas>
+  <script>
+    // demo script by @jazzmickle
+    me="WELCOME TO TOPFRAME",ti=0,initDemo=(()=>{d=document,c=d.getElementById("demo"),c.width=320,c.height=240,cs=c.style,cs.width="80%",cs.height="80%",ctx=c.getContext("2d"),pi=ctx.getImageData(0,0,320,240),p=pi.data,S=[4,21,14,21,4],fl=Math.floor,ci=0,cb=[],si=Math.sin,fdc=[75,2,5,2,1,2,36,2,13,4,4,2,1,2,36,2,13,4,4,1,2,1,37,1,15,2,126,2,182,2,6,2,6,1,40,2,4,2,8,2,3,1,1,1,1,1,5,2,30,2,4,2,10,2,3,3,6,2,30,2,4,2,10,2,2,1,1,1,1,1,3,6,10,5,12,2,6,2,8,2,5,1,7,2,6,2,14,2,5,2,7,2,6,2,14,2,6,2,14,2,4,2,39,2,94,4,6,1,5,3,5,3,6,1,5,5,5,3,3,6,2,2,2,2,3,3,4,1,2,2,3,1,2,2,4,2,5,2,7,2,5,2,2,2,2,2,1,3,4,2,7,2,5,2,5,2,1,1,3,4,4,2,9,2,3,3,1,2,4,2,6,1,8,2,3,6,5,2,3,5,5,2,4,2,2,2,4,2,5,1,6,1,2,2,6,2,3,1,2,2,3,2,2,2,3,2,6,4,4,4,3,5,4,3,7,2,4,3,5,4,4,2,134,4,4,4,45,3,3,2,2,2,2,2,2,2,4,2,6,2,7,2,12,2,6,1,2,2,3,4,4,5,4,2,6,2,5,3,4,5,5,3,6,3,2,2,2,2,6,2,18,2,18,2,4,3,3,2,2,2,6,2,4,2,6,2,5,3,4,5,5,3,12,4,4,4,5,2,6,2,7,2,12,2,7,2,29,2,111,3,4,4,5,3,4,4,4,5,3,5,4,3,12,2,1,2,3,2,1,2,3,2,1,2,3,2,1,2,3,2,2,1,3,2,2,1,3,2,1,2,10,2,2,2,3,2,1,2,2,2,7,1,2,2,3,3,5,3,4,2,14,6,2,5,3,2,6,2,2,2,2,2,6,2,6,2,1,3,10,2,2,2,2,2,2,2,2,2,2,2,2,2,1,2,3,2,3,1,2,2,6,2,2,2,10,2,2,2,2,5,4,4,3,4,4,6,2,2,7,4,132,2,2,1,4,4,3,5,3,2,2,1,3,2,5,2,3,1,7,1,4,3,4,2,2,1,5,2,7,2,3,2,1,2,3,2,5,3,1,2,3,1,3,1,3,2,1,2,3,2,2,1,5,2,7,2,3,5,3,2,5,2,1,1,1,1,3,2,2,1,2,2,2,2,2,6,4,2,7,2,3,2,1,2,3,2,6,2,3,1,2,4,1,1,2,2,2,2,2,2,2,2,4,2,4,1,2,2,3,2,2,2,2,2,3,1,2,2,3,1,2,2,2,2,2,2,1,2,3,2,2,2,3,4,4,3,4,2,2,2,2,6,2,2,3,1,2,2,3,1,3,3,133,4,5,3,4,4,4,4,3,6,3,1,2,2,2,2,3,1,2,2,3,1,3,2,1,2,3,2,1,2,3,2,1,2,2,2,2,2,2,1,2,1,1,1,2,2,2,2,2,2,3,1,2,2,3,1,3,2,1,2,2,2,2,2,3,2,1,2,3,2,7,2,4,2,2,2,3,2,1,1,3,2,1,1,1,1,2,5,3,2,1,3,2,5,6,2,5,1,5,2,2,2,3,2,1,1,3,2,1,1,1,1,2,2,6,2,1,2,3,2,2,2,2,2,2,2,3,2,5,2,1,2,5,2,4,5,3,2,7,5,2,2,2,2,3,4,4,2,6,3,6,1,6,2,1,1,131,2,3,1,2,2,3,1,3,5,3,3,4,2,7,3,21,2,1,2,3,2,1,2,6,2,3,2,6,2,7,2,22,2,6,3,6,2,4,2,6,2,7,2,21,2,1,1,6,2,5,2,5,2,7,2,6,2,20,2,2,2,4,2,5,2,6,2,7,2,6,2,20,2,3,1,4,2,4,6,3,3,7,2,4,3],F=[];for(let t=0;t<64;t++)F[t]=[];let t=1,e=0,o=0;for(let i=0;i<fdc.length;i++){t=1-t;for(let c=0;c<fdc[i];c++)F[e][o]=t,64==++e&&(e=0,o++)}function l(t,i){for(let c=0;c<5;c++)for(let e=0;e<5;e++)s(S[c],e)&&(p[4*(320*(i+c)+t+e+ci)+ci]=255*cb[ci],p[4*(320*(i+c)+t+e+ci)+3]=255)}function r(t,i,c){c=c.charCodeAt(0)-32;for(let e=0;e<8;e++)for(let f=0;f<8;f++)F[c%8*8+e][8*fl(c/8)+f]&&(p[4*(t+e+320*(i+f)-1)]=255,p[4*(t+e+320*(i+f))+1]=255,p[4*(t+e+320*(i+f)+1)+2]=255,p[4*(t+e+320*(i+f)+0)+3]=255)}function s(t,i){return f=1<<i,(t&f)==f}tau=6,rq=requestAnimationFrame,rq(function c(e){for(ti=e,ci=(ci+1)%3,cb[0]=.75+.25*si(e/300),cb[1]=.75+.25*si(e/700),cb[2]=.75+.25*si(e/200),i=0;i<307200;i++)i%4==3?p[i]=0:p[i]=20;for(t=0;t<5;t++)for(a=0;a<tau;a+=tau/20)g=60+7*t,n=si(3+a+e/500)*g,m=si(a+e/700)*g,l(fl(160+n),fl(120+m));!function(t,i,c){for(let e=0;e<c.length;e++)r(t+8*e,i+fl(2*si(e+.01*ti)),c[e])}(60+fl(40*Math.sin(e/700)),120+fl(10*si(e/100)),me),ctx.putImageData(pi,0,0),rq(c)})}),initDemo();
+  </script>
+
+
+  <video id="zombo-src" class="absolute bottom-0 w-3/12 hidden" src="/-/data/topframe.mp4" controls autoplay></video>
+  <canvas id="zombo-dst" class="absolute bottom-0 w-3/12 draggable"></canvas>
+  <script src="/-/data/chromagl.js"></script>
+  <script>
+    // video by @jf
+    $("#zombo-src").on("loadeddata", () => {
+      var chroma = new ChromaGL($('#zombo-src').get(0), $('#zombo-dst').get(0));
+      chroma.addChromaKey('green');
+      chroma.go();
+    });
+  </script>
+
+
+  <div id="stocks" class="absolute right-2 top-40 flex flex-col hidden">
+    <div id="TWLO" class="bg-black bg-opacity-75 w-64 m-2 p-2 rounded-lg draggable">
+      <div class="text-3xl">
+        <span class="symbol"></span>
+        <span class="market-price float-right"></span>
+      </div>
+      <div class="text-sm text-gray-400">
+        <span class="display-name"></span>
+        <span class="decrease float-right text-red-400"><span class="market-change"></span></span>
+        <span class="increase float-right text-green-400">+<span class="market-change"></span></span>
+      </div>
+    </div>
+  </div>
+  <script>
+    /*
+    // to enable, `chmod +x stocks` in your topframe dir. [curl is required]
+    */
+    let stocks = new EventSource("/stocks?TWLO");
+    stocks.addEventListener("stdout", (e) => {
+      let data = JSON.parse(e.data).quoteResponse.result[0];
+      let change = data.regularMarketChangePercent.toPrecision(2);
+      $("#TWLO .symbol").text(data.symbol);
+      $("#TWLO .display-name").text(data.shortName);
+      $("#TWLO .market-price").text(data.regularMarketPrice);
+      $("#TWLO .market-change").text(change);
+      $("#TWLO .increase").toggle(change > 0);
+      $("#TWLO .decrease").toggle(change < 0);
+      $("#stocks").show();
+    });
+  </script>
+
+
+  <script>
+    // snow script by @kurisubrooks
+    var snowMax=100,snowColor=["#DDD","#EEE"],snowEntity="&#x2022;",snowSpeed=.75,snowMinSize=8,snowMaxSize=24,snowRefresh=50,snowStyles="cursor: default; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; -o-user-select: none; user-select: none;",snow=[],pos=[],coords=[],lefr=[],marginBottom,marginRight;function randomise(o){return rand=Math.floor(o*Math.random()),rand}function moveSnow(){for(i=0;i<=snowMax;i++)coords[i]+=pos[i],snow[i].posY+=snow[i].sink,snow[i].style.left=snow[i].posX+lefr[i]*Math.sin(coords[i])+"px",snow[i].style.top=snow[i].posY+"px",(snow[i].posY>=marginBottom-2*snow[i].size||parseInt(snow[i].style.left)>marginRight-3*lefr[i])&&(snow[i].posX=randomise(marginRight-snow[i].size),snow[i].posY=0);setTimeout("moveSnow()",snowRefresh)}function initSnow(){var o=snowMaxSize-snowMinSize;for(marginBottom=document.body.scrollHeight-5,marginRight=document.body.clientWidth-15,i=0;i<=snowMax;i++)coords[i]=0,lefr[i]=15*Math.random(),pos[i]=.03+Math.random()/10,snow[i]=document.getElementById("flake"+i),snow[i].style.fontFamily="inherit",snow[i].size=randomise(o)+snowMinSize,snow[i].style.fontSize=snow[i].size+"px",snow[i].style.color=snowColor[randomise(snowColor.length)],snow[i].style.zIndex=1e3,snow[i].sink=snowSpeed*snow[i].size/5,snow[i].posX=randomise(marginRight-snow[i].size),snow[i].posY=randomise(2*marginBottom-marginBottom-2*snow[i].size),snow[i].style.left=snow[i].posX+"px",snow[i].style.top=snow[i].posY+"px";moveSnow()}function resize(){marginBottom=document.body.scrollHeight-5,marginRight=document.body.clientWidth-15}for(i=0;i<=snowMax;i++)document.write("<span id='flake"+i+"' style='"+snowStyles+"position:absolute;top:-"+snowMaxSize+"'>"+snowEntity+"</span>");window.onresize=resize,initSnow();
+  </script>
+
+</body>
+</html>

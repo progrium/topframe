@@ -19,7 +19,7 @@ import (
 	"text/template"
 	"time"
 
-	_ "embed"
+	"embed"
 
 	"github.com/google/subcommands"
 	"github.com/progrium/macdriver/cocoa"
@@ -34,12 +34,8 @@ const (
 	docsURL = "http://github.com/progrium/topframe"
 )
 
-var (
-	//go:embed index.html
-	defaultIndex []byte
-	//go:embed agent.plist
-	agentPlist string
-)
+//go:embed data
+var data embed.FS
 
 func init() {
 	runtime.LockOSThread()
@@ -97,14 +93,18 @@ func ensureDir() (dir string) {
 	os.MkdirAll(dir, 0755)
 
 	if _, err := os.Stat(filepath.Join(dir, "index.html")); os.IsNotExist(err) {
-		ioutil.WriteFile(filepath.Join(dir, "index.html"), defaultIndex, 0644)
+		ioutil.WriteFile(filepath.Join(dir, "index.html"), mustReadFile(data, "data/index.html"), 0644)
+	}
+
+	if _, err := os.Stat(filepath.Join(dir, "stocks")); os.IsNotExist(err) {
+		ioutil.WriteFile(filepath.Join(dir, "stocks"), mustReadFile(data, "data/stocks"), 0644)
 	}
 
 	return dir
 }
 
 func generatePlist(dir string) {
-	tmpl, err := template.New("plist").Parse(agentPlist)
+	tmpl, err := template.New("plist").ParseFS(data, "data/agent.plist")
 	fatal(err)
 
 	p, err := exec.LookPath(os.Args[0])
@@ -125,6 +125,10 @@ func startServer(dir string) *net.TCPAddr {
 			dirpath := filepath.Join(dir, r.URL.Path)
 			if isExecScript(dirpath) && r.Header.Get("Accept") == "text/event-stream" {
 				streamExecScript(w, dirpath, strings.Split(r.URL.RawQuery, "+"))
+				return
+			}
+			if strings.HasPrefix(r.URL.Path, "/-/") {
+				http.StripPrefix("/-/", http.FileServer(http.FS(data))).ServeHTTP(w, r)
 				return
 			}
 			http.FileServer(http.Dir(dir)).ServeHTTP(w, r)
@@ -306,7 +310,7 @@ func streamExecScript(w http.ResponseWriter, dirpath string, args []string) {
 	finished := make(chan bool)
 	go func() {
 		for scanner.Scan() {
-			_, err := io.WriteString(w, fmt.Sprintf("data: %s\n\n", scanner.Text()))
+			_, err := io.WriteString(w, fmt.Sprintf("event: stdout\ndata: %s\n\n", scanner.Text()))
 			if err != nil {
 				log.Println("script:", err)
 				return
@@ -331,6 +335,14 @@ func isExecScript(dirpath string) bool {
 		return false
 	}
 	return fi.Mode()&0111 != 0
+}
+
+func mustReadFile(fs embed.FS, name string) []byte {
+	b, err := fs.ReadFile(name)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return b
 }
 
 func fatal(err error) {
