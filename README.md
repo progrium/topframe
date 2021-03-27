@@ -18,8 +18,7 @@ User programmable screen overlay using web technologies
 
 ## Getting Started
 
-First, [download Go 1.16+](https://golang.org/dl/) or `brew install go`. If already installed, make sure it is 
-version 1.16 or greater:
+First, [download Go 1.16+](https://golang.org/dl/) or `brew install go`. If already installed, make sure it is version 1.16 or greater:
 
 ```
 $ go version
@@ -34,8 +33,8 @@ $ GOBIN=/usr/local/bin go get github.com/progrium/topframe
 ```
 
 Currently, this is the preferred way to install as anything else requires a much more elaborate
-release process with Apple code signing, etc. Specifying `GOBIN` is optional, but lets you specify
-where to install the binary, ensuring it is put in your `PATH`. 
+release process with Apple code signing, etc. Specifying `GOBIN` lets you say
+where to install the binary, ensuring it is put in your `PATH`, but is optional if Go is more setup. 
 
 ```
 $ topframe
@@ -48,15 +47,18 @@ Subcommands:
         version          show version
 ```
 
-Running `topframe agent` will create a `~/.topframe` directory with a default `index.html` used for the
-overlay. A new menu bar extra will let you enable or disable the overlay, make it interactive for
-debugging and bringing up devtools, and quickly open the `~/.topframe` directory to edit source.
-Files changed in the directory will trigger a reload, so if you edit `index.html` and hit save, changes
-will reflect immediately.
+To start it and show the demo webpage overlay, run `topframe agent`. This will also:
+
+* create a `~/.topframe` directory with a demo `index.html` used for the overlay
+* add a menu bar extra (🔲) to control Topframe
+* watch for file changes in `~/.topframe` to trigger a page reload
+
+If you edit `~/.topframe/index.html` and hit save, changes will reflect immediately. If you hate the demo content of the default `index.html`, change it! Use `Show Source...` from the menu extra to quickly
+open the topframe directory.
 
 ### Launching on Startup
 
-Topframe works with `launchd` to run as an agent on startup. You can generate
+Topframe works with `launchd` to run as a startup agent. You can generate
 an agent plist file with `topframe agent -plist`, which you can write to a file in `~/Library/LaunchAgents`:
 
 ```
