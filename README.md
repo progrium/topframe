@@ -53,12 +53,12 @@ To start it and show the demo webpage overlay, run `topframe agent`. This will a
 * watch for file changes in `~/.topframe` to trigger a page reload
 * add a menu bar extra (🔲) to control the overlay
 
-If you edit `~/.topframe/index.html` and hit save, changes will reflect immediately. If you hate the demo content of the default `index.html`, change it! Use *Show Source...* from the menu extra to quickly
+If you edit `~/.topframe/index.html` and hit save, changes will reflect immediately. If you hate the demo content of the default `index.html`, change it! Use **Show Source...** from the menu extra to quickly
 open your topframe directory.
 
 ### Launching on Startup
 
-Topframe works with `launchd` to run as an agent on startup. You can generate
+Topframe works with `launchd` to run as a background agent on startup. You can generate
 an agent plist file with `topframe agent -plist`, which you can write to a file in `~/Library/LaunchAgents`:
 
 ```
