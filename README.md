@@ -11,7 +11,7 @@ Webpage screen overlay using web technologies
 ---
 <img align="right" width="320" alt="Topframe Demo" src="./topframe.gif" />
 
-* Use HTML/CSS/JS to customize your computing experience
+* Customize your computing experience with webdev
 * Display information and always-on-top widgets
 * Edit source, hit save, screen will update
 * Extensible with shell scripts in any language
