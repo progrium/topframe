@@ -1,7 +1,7 @@
 <img align="left" alt="Topframe" src="./topframe.png" />
 
 # Topframe
-User programmable screen overlay using web technologies
+Webpage screen overlay using web technologies
 
 <!-- <a href="https://goreportcard.com/report/github.com/progrium/topframe" title="Go Report Card"><img src="https://goreportcard.com/badge/github.com/progrium/topframe" alt="Go Report Card"></a> -->
 <a href="https://twitter.com/progriumHQ" title="@progriumHQ on Twitter"><img src="https://img.shields.io/badge/twitter-@progriumHQ-55acee.svg" alt="@progriumHQ on Twitter"></a>
@@ -9,8 +9,10 @@ User programmable screen overlay using web technologies
 <a href="https://github.com/sponsors/progrium" title="Sponsor Project"><img src="https://img.shields.io/static/v1?label=sponsor&message=%E2%9D%A4&logo=GitHub" alt="Sponsor Project" /></a>
 
 ---
+<img align="right" width="320" alt="Topframe Demo" src="./topframe.gif" />
+
+* Use HTML/CSS/JS to customize your computing experience
 * Display information and always-on-top widgets
-* Use HTML/JS/CSS to draw on your screen
 * Edit source, hit save, screen will update
 * Extensible with shell scripts in any language
 * Less than 400 lines of Go code, minimal deps
@@ -37,32 +39,33 @@ release process with Apple code signing, etc. Specifying `GOBIN` lets you say
 where to install the binary, ensuring it is put in your `PATH`, but is optional if Go is more setup. 
 
 ```
-$ topframe
-Usage: topframe <flags> <subcommand> <subcommand args>
+$ topframe -h
+Usage: topframe <flags>
+Topframe is a fullscreen webview overlay agent
 
-Subcommands:
-        agent            fullscreen webview overlay agent
-        docs             open documentation in browser
-        help             describe subcommands and their syntax
-        version          show version
+Flags:
+  -docs       open documentation in browser
+  -help       show help
+  -plist      generate launch agent plist
+  -version    show version
 ```
 
-To start it and show the demo webpage overlay, run `topframe agent`. This will also:
+To start it and show the demo webpage overlay, simply run `topframe`. This will also:
 
 * create a `~/.topframe` directory with a demo `index.html` used for the overlay
 * watch for file changes in `~/.topframe` to trigger a page reload
 * add a menu bar extra (🔲) to control the overlay
 
-If you edit `~/.topframe/index.html` and hit save, changes will reflect immediately. If you hate the demo content of the default `index.html`, change it! Use **Show Source...** from the menu extra to quickly
+If you edit `~/.topframe/index.html` and hit save, changes will reflect immediately. If you hate the demo content of the default `index.html`, change it! Use **Show Source** from the menu extra to quickly
 open your topframe directory.
 
 ### Launching on Startup
 
 Topframe works with `launchd` to run as a background agent on startup. You can generate
-an agent plist file with `topframe agent -plist`, which you can write to a file in `~/Library/LaunchAgents`:
+an agent plist file with `topframe -plist`, which you can write to a file in `~/Library/LaunchAgents`:
 
 ```
-$ topframe agent -plist > ~/Library/LaunchAgents/com.progrium.Topframe.plist
+$ topframe -plist > ~/Library/LaunchAgents/com.progrium.Topframe.plist
 ```
 
 It's a good idea to view the output before writing to the file, just to make sure
