@@ -2,7 +2,7 @@ package main
 
 import (
 	"bufio"
-	"context"
+	"embed"
 	"flag"
 	"fmt"
 	"io"
@@ -19,9 +19,6 @@ import (
 	"text/template"
 	"time"
 
-	"embed"
-
-	"github.com/google/subcommands"
 	"github.com/progrium/macdriver/cocoa"
 	"github.com/progrium/macdriver/core"
 	"github.com/progrium/macdriver/objc"
@@ -42,42 +39,40 @@ func init() {
 }
 
 func main() {
-	subcommands.Register(&agentCmd{}, "")
-	subcommands.Register(&docsCmd{}, "")
-	subcommands.Register(&versionCmd{}, "")
-	subcommands.Register(subcommands.HelpCommand(), "")
-
+	var (
+		flagHelp         = flag.Bool("help", false, "show help")
+		flagHelpShort    = flag.Bool("h", false, "show help")
+		flagVersion      = flag.Bool("version", false, "show version")
+		flagVersionShort = flag.Bool("v", false, "show help")
+		flagDocs         = flag.Bool("docs", false, "open documentation in browser")
+		flagPlist        = flag.Bool("plist", false, "generate launch agent plist")
+	)
 	flag.Parse()
 
-	status := subcommands.Execute(context.Background())
-	os.Exit(int(status))
-}
+	if *flagHelp || *flagHelpShort {
+		printHelp()
+		return
+	}
+	if *flagVersion || *flagVersionShort {
+		fmt.Println(version)
+		return
+	}
+	if *flagDocs {
+		fatal(exec.Command("open", docsURL).Run())
+		return
+	}
 
-type agentCmd struct {
-	plist bool
-}
-
-func (*agentCmd) Name() string     { return "agent" }
-func (*agentCmd) Synopsis() string { return "fullscreen webview overlay agent" }
-func (*agentCmd) Usage() string    { return "Usage: topframe agent [-plist]\n" }
-func (c *agentCmd) SetFlags(f *flag.FlagSet) {
-	f.BoolVar(&c.plist, "plist", false, "generate agent plist")
-}
-
-func (c *agentCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
 	dir := ensureDir()
 
-	if c.plist {
+	if *flagPlist {
 		generatePlist(dir)
-		return subcommands.ExitSuccess
+		return
 	}
 
 	addr := startServer(dir)
 	fw := startWatcher(dir)
 
 	runApp(dir, addr, fw)
-
-	return subcommands.ExitSuccess
 }
 
 func ensureDir() (dir string) {
@@ -104,7 +99,7 @@ func ensureDir() (dir string) {
 }
 
 func generatePlist(dir string) {
-	tmpl, err := template.New("plist").ParseFS(data, "data/agent.plist")
+	tmpl, err := template.New("plist").Parse(string(mustReadFile(data, "data/agent.plist")))
 	fatal(err)
 
 	p, err := exec.LookPath(os.Args[0])
@@ -268,28 +263,6 @@ func runApp(dir string, addr *net.TCPAddr, fw *watcher.Watcher) {
 	app.Run()
 }
 
-type docsCmd struct{}
-
-func (*docsCmd) Name() string             { return "docs" }
-func (*docsCmd) Synopsis() string         { return "open documentation in browser" }
-func (*docsCmd) Usage() string            { return "Usage: topframe docs\n" }
-func (*docsCmd) SetFlags(f *flag.FlagSet) {}
-func (p *docsCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
-	fatal(exec.Command("open", docsURL).Run())
-	return subcommands.ExitSuccess
-}
-
-type versionCmd struct{}
-
-func (*versionCmd) Name() string             { return "version" }
-func (*versionCmd) Synopsis() string         { return "show version" }
-func (*versionCmd) Usage() string            { return "Usage: topframe version\n" }
-func (*versionCmd) SetFlags(f *flag.FlagSet) {}
-func (p *versionCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
-	fmt.Println(version)
-	return subcommands.ExitSuccess
-}
-
 func streamExecScript(w http.ResponseWriter, dirpath string, args []string) {
 	flusher, ok := w.(http.Flusher)
 	if !ok || !isExecScript(dirpath) {
@@ -343,6 +316,17 @@ func mustReadFile(fs embed.FS, name string) []byte {
 		log.Fatal(err)
 	}
 	return b
+}
+
+func printHelp() {
+	fmt.Printf("Usage: topframe <flags>\n")
+	fmt.Printf("Topframe is a fullscreen webview overlay agent\n\n")
+	fmt.Printf("Flags:\n")
+	flag.VisitAll(func(f *flag.Flag) {
+		if len(f.Name) > 1 {
+			fmt.Printf("  -%-10s %s\n", f.Name, f.Usage)
+		}
+	})
 }
 
 func fatal(err error) {
