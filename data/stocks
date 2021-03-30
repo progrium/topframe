@@ -1,2 +1,22 @@
 #!/bin/sh
+#
+# Topframe Script Demo: stonks
+# A very fancy script that uses Yahoo Finance API for getting stock data.
+# Required: curl
+#
+# Topframe lets you run shell scripts from your overlay page and get the output
+# streamed back to you via server-sent events. Any shell script in your 
+# topframe directory with execute permission (chmod +x) can be called using
+# an EventSource. For example, here's how you would call this script with an
+# argument and parse the JSON output of curl:
+#
+#   let stocks = new EventSource("/stocks?TWLO");
+#   stocks.addEventListener("stdout", (e) => {
+#       let data = JSON.parse(e.data)
+#   });
+#
+# Every line of STDOUT is a new event. If the script exits, the EventSource
+# closes, but by default will retry every 3 seconds. This gets you free 
+# polling. However, it also works as you'd expect with long running scripts.
+#
 curl -s "https://query1.finance.yahoo.com/v7/finance/quote?symbols=$1"
