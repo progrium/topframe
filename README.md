@@ -1,7 +1,7 @@
 <img align="left" alt="Topframe" src="./topframe.png" />
 
 # Topframe
-Webpage screen overlay using web technologies
+Local webpage screen overlay
 
 <!-- <a href="https://goreportcard.com/report/github.com/progrium/topframe" title="Go Report Card"><img src="https://goreportcard.com/badge/github.com/progrium/topframe" alt="Go Report Card"></a> -->
 <a href="https://twitter.com/progriumHQ" title="@progriumHQ on Twitter"><img src="https://img.shields.io/badge/twitter-@progriumHQ-55acee.svg" alt="@progriumHQ on Twitter"></a>
