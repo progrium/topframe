@@ -20,23 +20,13 @@ Local webpage screen overlay
 
 ## Getting Started
 
-First, [download Go 1.16+](https://golang.org/dl/) or `brew install go`. If already installed, make sure it is version 1.16 or greater:
+You can download from [Releases](https://github.com/progrium/topframe/releases) or with Homebrew you can:
 
 ```
-$ go version
-go version go1.16.2 darwin/amd64
+$ brew install progrium/taps/topframe
 ```
 
-Then use `go get` to download, build, and install the topframe binary into a directory in your `PATH` 
-by setting `GOBIN`:
-
-```
-$ GOBIN=/usr/local/bin go get github.com/progrium/topframe
-```
-
-Currently, this is the preferred way to install as anything else requires a much more elaborate
-release process with Apple code signing, etc. Specifying `GOBIN` lets you say
-where to install the binary, ensuring it is put in your `PATH`, but is optional if Go is more setup. 
+If you download a release zip make sure to unzip and put the binary in your PATH (like /usr/local/bin). 
 
 ```
 $ topframe -h
