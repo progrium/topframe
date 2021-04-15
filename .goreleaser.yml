@@ -1,0 +1,37 @@
+before:
+  hooks:
+    - go mod tidy
+checksum:
+  disable: true 
+snapshot:
+  name_template: "SNAPSHOT-{{.ShortCommit}}"
+builds:
+  - id: topframe
+    goos:
+      - darwin
+    goarch:
+      - amd64
+    ldflags: "-X main.Version={{.Version}}"
+    hooks:
+      post: './scripts/gonutil {{.Version}}'
+archives:
+- id: default
+  builds:
+  - topframe
+  name_template: '{{ .ProjectName }}_{{ .Version }}'
+  format: zip
+  files:
+  - none*
+signs:
+  - id: notarize
+    signature: "${artifact}.zip"
+    cmd: gon
+    args: ["./dist/gon_notarize.json"]
+    artifacts: all
+release:
+  github:
+    owner: progrium
+    name: topframe
+  ids:
+    - default
+  draft: true

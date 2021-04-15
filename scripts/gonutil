@@ -1,0 +1,20 @@
+#!/bin/sh
+cat <<CONFIG > ./dist/gon_sign.json
+{
+    "source" : ["./dist/topframe_darwin_amd64/topframe"],
+    "bundle_id" : "com.progrium.topframe",
+    "sign" :{
+        "application_identity" : "Developer ID Application: Jeff Lindsay"
+    }
+}
+CONFIG
+gon -log-level=info -log-json ./dist/gon_sign.json > /dev/null
+cat <<CONFIG > ./dist/gon_notarize.json
+{
+    "notarize": [{
+        "path": "./dist/topframe_${1}.zip",
+        "bundle_id": "com.progrium.topframe",
+        "staple": false
+    }]
+}
+CONFIG

@@ -26,8 +26,9 @@ import (
 	"github.com/progrium/watcher"
 )
 
-const (
-	version = "0.2.0"
+var (
+	Version string
+
 	docsURL = "http://github.com/progrium/topframe"
 )
 
@@ -54,7 +55,7 @@ func main() {
 		return
 	}
 	if *flagVersion || *flagVersionShort {
-		fmt.Println(version)
+		fmt.Println(Version)
 		return
 	}
 	if *flagDocs {
@@ -258,7 +259,7 @@ func runApp(dir string, addr *net.TCPAddr, fw *watcher.Watcher) {
 		}()
 	})
 
-	log.Printf("topframe %s from progrium.com\n", version)
+	log.Printf("topframe %s from progrium.com\n", Version)
 	app.ActivateIgnoringOtherApps(true)
 	app.Run()
 }
